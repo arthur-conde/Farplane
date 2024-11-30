@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,180 +11,197 @@ using Farplane.FFX.Values;
 using Farplane.Memory;
 using MahApps.Metro;
 
-namespace Farplane.FFX.EditorPanels.ItemsPanel
+namespace Farplane.FFX.EditorPanels.ItemsPanel;
+
+/// <summary>
+/// Interaction logic for ItemsPanel.xaml
+/// </summary>
+public partial class ItemsPanel : UserControl
 {
-    /// <summary>
-    /// Interaction logic for ItemsPanel.xaml
-    /// </summary>
-    public partial class ItemsPanel : UserControl
+    readonly int _offsetKeyItem = OffsetScanner.GetOffset(GameOffset.FFX_KeyItems);
+    readonly int _offsetAlBhed = OffsetScanner.GetOffset(GameOffset.FFX_AlBhed);
+
+    readonly ButtonGrid _itemButtons = new(2, 112);
+    readonly ButtonGrid _keyItemButtons = new(2, KeyItem.KeyItems.Length - 1);
+
+    static readonly ComboBox ComboItemList = new() { ItemsSource = Item.Items.Select(item => item.Name) };
+    static readonly TextBox TextItemCount = new();
+    static readonly StackPanel PanelEditItem = new()
     {
-        private readonly int _offsetKeyItem = OffsetScanner.GetOffset(GameOffset.FFX_KeyItems);
-        private readonly int _offsetAlBhed = OffsetScanner.GetOffset(GameOffset.FFX_AlBhed);
-
-        private readonly ButtonGrid _itemButtons = new ButtonGrid(2, 112);
-        private readonly ButtonGrid _keyItemButtons = new ButtonGrid(2, KeyItem.KeyItems.Length - 1);
-
-        private static readonly ComboBox ComboItemList = new ComboBox() { ItemsSource = Item.Items.Select(item => item.Name) };
-        private static readonly TextBox TextItemCount = new TextBox();
-        private static readonly StackPanel PanelEditItem = new StackPanel()
+        Orientation = Orientation.Horizontal,
+        Children =
         {
-            Orientation = Orientation.Horizontal,
-            Children =
-            {
-                ComboItemList,
-                TextItemCount
-            }
-        };
+            ComboItemList,
+            TextItemCount
+        }
+    };
 
-        private bool _refreshing = false;
+    bool _refreshing = false;
 
-        private Item[] _currentItems;
-        private int _editingItem = -1;
+    Item[] _currentItems;
+    int _editingItem = -1;
 
-        private bool[] _keyItemState;
-        private bool[] _alBhedState;
+    bool[] _keyItemState;
+    bool[] _alBhedState;
 
-        private static readonly Tuple<AppTheme, Accent> currentStyle = ThemeManager.DetectAppStyle(Application.Current);
-        private readonly Brush _trueKeyItemBrush = new SolidColorBrush((Color)currentStyle.Item1.Resources["BlackColor"]);
-        private readonly Brush _falseKeyItemBrush = new SolidColorBrush((Color)currentStyle.Item1.Resources["Gray2"]);
+    static readonly Tuple<AppTheme, Accent> currentStyle = ThemeManager.DetectAppStyle(Application.Current);
+    readonly Brush _trueKeyItemBrush = new SolidColorBrush((Color)currentStyle.Item1.Resources["BlackColor"]);
+    readonly Brush _falseKeyItemBrush = new SolidColorBrush((Color)currentStyle.Item1.Resources["Gray2"]);
 
-        public ItemsPanel()
+    public ItemsPanel()
+    {
+        this.InitializeComponent();
+        this.TabItems.Content = this._itemButtons;
+        this.ContentKeyItems.Content = this._keyItemButtons;
+
+        this._itemButtons.ButtonClicked += this.ItemButtonsOnButtonClicked;
+
+        ComboItemList.KeyDown += this.ItemEditor_KeyDown;
+        TextItemCount.KeyDown += this.ItemEditor_KeyDown;
+
+        this._keyItemButtons.ButtonClicked += this.KeyItemButtonsOnButtonClicked;
+    }
+
+    void KeyItemButtonsOnButtonClicked(int buttonIndex)
+    {
+        var keyItemData = GameMemory.Read<byte>(this._offsetKeyItem, 8, false);
+        var bitIndex = KeyItem.KeyItems[buttonIndex].BitIndex;
+        var keyByteIndex = bitIndex / 8;
+        var keyBitIndex = bitIndex % 8;
+
+        keyItemData[keyByteIndex] = BitHelper.ToggleBit(keyItemData[keyByteIndex], keyBitIndex);
+        GameMemory.Write(this._offsetKeyItem, keyItemData, false);
+        this.Refresh();
+    }
+
+    void ItemButtonsOnButtonClicked(int buttonIndex)
+    {
+        if (this._editingItem == buttonIndex)
         {
-            InitializeComponent();
-            TabItems.Content = _itemButtons;
-            ContentKeyItems.Content = _keyItemButtons;
-
-            _itemButtons.ButtonClicked += ItemButtonsOnButtonClicked;
-
-            ComboItemList.KeyDown += ItemEditor_KeyDown;
-            TextItemCount.KeyDown += ItemEditor_KeyDown;
-
-            _keyItemButtons.ButtonClicked += KeyItemButtonsOnButtonClicked;
+            return;
         }
 
-        private void KeyItemButtonsOnButtonClicked(int buttonIndex)
-        {
-            var keyItemData = GameMemory.Read<byte>(_offsetKeyItem, 8, false);
-            var bitIndex = KeyItem.KeyItems[buttonIndex].BitIndex;
-            var keyByteIndex = bitIndex / 8;
-            var keyBitIndex = bitIndex % 8;
+        this.Refresh();
 
-            keyItemData[keyByteIndex] = BitHelper.ToggleBit(keyItemData[keyByteIndex], keyBitIndex);
-            GameMemory.Write(_offsetKeyItem, keyItemData, false);
-            Refresh();
+        var clickedItem = this._currentItems[buttonIndex];
+        var baseItem = Item.Items.First(item => item.ID == clickedItem.ID);
+
+        var itemIndex = Item.Items.ToList().IndexOf(baseItem);
+
+        ComboItemList.SelectedIndex = itemIndex;
+        ComboItemList.KeyDown += this.ItemEditor_KeyDown;
+
+        TextItemCount.Text = clickedItem.Count.ToString();
+
+        this._itemButtons.SetContent(buttonIndex, PanelEditItem);
+        this._editingItem = buttonIndex;
+
+        TextItemCount.SelectionStart = 0;
+        TextItemCount.SelectionLength = TextItemCount.Text.Length;
+
+        TextItemCount.Focus();
+    }
+
+    void ItemEditor_KeyDown(object sender, KeyEventArgs keyEventArgs)
+    {
+        if (keyEventArgs.Key is not Key.Enter and not Key.Escape)
+        {
+            return;
         }
 
-        private void ItemButtonsOnButtonClicked(int buttonIndex)
+        switch (keyEventArgs.Key)
         {
-            if (_editingItem == buttonIndex) return;
-
-            Refresh();
-
-            var clickedItem = _currentItems[buttonIndex];
-            var baseItem = Item.Items.First(item => item.ID == clickedItem.ID);
-
-            var itemIndex = Item.Items.ToList().IndexOf(baseItem);
-
-            ComboItemList.SelectedIndex = itemIndex;
-            ComboItemList.KeyDown += ItemEditor_KeyDown;
-
-            TextItemCount.Text = clickedItem.Count.ToString();
-
-            _itemButtons.SetContent(buttonIndex, PanelEditItem);
-            _editingItem = buttonIndex;
-
-            TextItemCount.SelectionStart = 0;
-            TextItemCount.SelectionLength = TextItemCount.Text.Length;
-
-            TextItemCount.Focus();
-        }
-
-        private void ItemEditor_KeyDown(object sender, KeyEventArgs keyEventArgs)
-        {
-            if (keyEventArgs.Key != Key.Enter && keyEventArgs.Key != Key.Escape) return;
-
-            switch (keyEventArgs.Key)
-            {
-                case Key.Enter:
-                    var itemIndex = ComboItemList.SelectedIndex;
-                    var itemCount = byte.Parse(TextItemCount.Text);
-                    if (itemCount == 0) itemIndex = 0;
-                    if (itemIndex == 0) itemCount = 0;
-                    Item.WriteItem(_editingItem, Item.Items[itemIndex].ID, itemCount);
-                    Refresh();
-                    break;
-                case Key.Escape:
-                    Refresh();
-                    break;
-            }
-        }
-
-        public void Refresh()
-        {
-            _refreshing = true;
-            _editingItem = -1;
-            _currentItems = Item.ReadItems();
-
-            // Refresh inventory items
-            for (int i = 0; i < _currentItems.Length; i++)
-            {
-                if (_currentItems[i].ID == 0xFF)
+            case Key.Enter:
+                var itemIndex = ComboItemList.SelectedIndex;
+                var itemCount = byte.Parse(TextItemCount.Text);
+                if (itemCount == 0)
                 {
-                    // Empty slot
-                    _itemButtons.SetContent(i, "< EMPTY >");
+                    itemIndex = 0;
                 }
-                else
-                {
-                    // Show item name and count
-                    _itemButtons.SetContent(i, _currentItems[i].Name + " x" + _currentItems[i].Count);
-                }
-            }
 
-            // Refresh key items and al bhed dictionaries
-            var keyItemData = GameMemory.Read<byte>(_offsetKeyItem, 8, false);
-            var alBhedData = GameMemory.Read<byte>(_offsetAlBhed, 4, false);
-            _keyItemState = BitHelper.GetBitArray(keyItemData, 58);
-            _alBhedState = BitHelper.GetBitArray(alBhedData, 26);
-
-            // Key Items
-            for (int i = 0; i < KeyItem.KeyItems.Length - 1; i++)
-            {
-                if (_keyItemState[KeyItem.KeyItems[i].BitIndex])
+                if (itemIndex == 0)
                 {
-                    // Key item owned
-                    _keyItemButtons.Buttons[i].Foreground = _trueKeyItemBrush;
-                    _keyItemButtons.SetContent(i, $"{KeyItem.KeyItems[i].Name}");
+                    itemCount = 0;
                 }
-                else
-                {
-                    // Key item not owned
-                    _keyItemButtons.Buttons[i].Foreground = _falseKeyItemBrush;
-                    _keyItemButtons.SetContent(i, $"{KeyItem.KeyItems[i].Name}");
-                }
-            }
 
-            // Al Bhed Dictionaries
-            for (int i = 0; i < 26; i++)
-            {
-                (PanelAlBhed.Children[i] as CheckBox).IsChecked = _alBhedState[i];
-            }
-            _refreshing = false;
+                Item.WriteItem(this._editingItem, Item.Items[itemIndex].ID, itemCount);
+                this.Refresh();
+                break;
+            case Key.Escape:
+                this.Refresh();
+                break;
         }
+    }
 
-        private void AlBhedDictionary_CheckedChanged(object sender, RoutedEventArgs e)
+    public void Refresh()
+    {
+        this._refreshing = true;
+        this._editingItem = -1;
+        this._currentItems = Item.ReadItems();
+
+        // Refresh inventory items
+        for (var i = 0; i < this._currentItems.Length; i++)
         {
-            if (_refreshing) return;
-            var checkBox = sender as CheckBox;
-            var alBhedData = GameMemory.Read<byte>(_offsetAlBhed, 4,false);
-
-            var boxIndex = PanelAlBhed.Children.IndexOf(checkBox);
-
-            var byteIndex = boxIndex/8;
-            var bitIndex = boxIndex%8;
-
-            alBhedData[byteIndex] = BitHelper.ToggleBit(alBhedData[byteIndex], bitIndex);
-            GameMemory.Write(_offsetAlBhed, alBhedData, false);
-            Refresh();
+            if (this._currentItems[i].ID == 0xFF)
+            {
+                // Empty slot
+                this._itemButtons.SetContent(i, "< EMPTY >");
+            }
+            else
+            {
+                // Show item name and count
+                this._itemButtons.SetContent(i, this._currentItems[i].Name + " x" + this._currentItems[i].Count);
+            }
         }
+
+        // Refresh key items and al bhed dictionaries
+        var keyItemData = GameMemory.Read<byte>(this._offsetKeyItem, 8, false);
+        var alBhedData = GameMemory.Read<byte>(this._offsetAlBhed, 4, false);
+        this._keyItemState = BitHelper.GetBitArray(keyItemData, 58);
+        this._alBhedState = BitHelper.GetBitArray(alBhedData, 26);
+
+        // Key Items
+        for (var i = 0; i < KeyItem.KeyItems.Length - 1; i++)
+        {
+            if (this._keyItemState[KeyItem.KeyItems[i].BitIndex])
+            {
+                // Key item owned
+                this._keyItemButtons.Buttons[i].Foreground = this._trueKeyItemBrush;
+                this._keyItemButtons.SetContent(i, $"{KeyItem.KeyItems[i].Name}");
+            }
+            else
+            {
+                // Key item not owned
+                this._keyItemButtons.Buttons[i].Foreground = this._falseKeyItemBrush;
+                this._keyItemButtons.SetContent(i, $"{KeyItem.KeyItems[i].Name}");
+            }
+        }
+
+        // Al Bhed Dictionaries
+        for (var i = 0; i < 26; i++)
+        {
+            (this.PanelAlBhed.Children[i] as CheckBox).IsChecked = this._alBhedState[i];
+        }
+        this._refreshing = false;
+    }
+
+    void AlBhedDictionary_CheckedChanged(object sender, RoutedEventArgs e)
+    {
+        if (this._refreshing)
+        {
+            return;
+        }
+
+        var checkBox = sender as CheckBox;
+        var alBhedData = GameMemory.Read<byte>(this._offsetAlBhed, 4, false);
+
+        var boxIndex = this.PanelAlBhed.Children.IndexOf(checkBox);
+
+        var byteIndex = boxIndex / 8;
+        var bitIndex = boxIndex % 8;
+
+        alBhedData[byteIndex] = BitHelper.ToggleBit(alBhedData[byteIndex], bitIndex);
+        GameMemory.Write(this._offsetAlBhed, alBhedData, false);
+        this.Refresh();
     }
 }

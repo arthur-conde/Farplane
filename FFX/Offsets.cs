@@ -1,17 +1,12 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Farplane.FFX
+namespace Farplane.FFX;
+
+public static class Offsets
 {
-	public static class Offsets
-	{
-		private static Dictionary<OffsetType, int> _offsetList = new Dictionary<OffsetType, int>()
-		{
-			{OffsetType.EquipmentBase, 0xD30F2C}, //
+    static readonly Dictionary<OffsetType, int> _offsetList = new()
+    {
+        {OffsetType.EquipmentBase, 0xD30F2C}, //
 			{OffsetType.PartyStatsBase, 0xD32060}, //
 			{OffsetType.ItemTypes, 0xD3095C}, //
 			{OffsetType.ItemCounts, 0xD30B5C}, //
@@ -36,122 +31,121 @@ namespace Farplane.FFX
 		};
 
 
-		public static int GetOffset(OffsetType offsetType)
-		{
-			var offset = _offsetList[offsetType];
-			return offset;
-		}
-	}
+    public static int GetOffset(OffsetType offsetType)
+    {
+        var offset = _offsetList[offsetType];
+        return offset;
+    }
+}
 
-	public enum OffsetType
-	{
-		EquipmentBase,
-		PartyStatsBase,
-		ItemTypes,
-		ItemCounts,
-		DebugFlags,
-		PartyInBattleFlags,
-		PartyGainedApFlags,
-		AeonNames,
-		KeyItems,
-		AlBhed,
-		SphereGridNodes,
-		SphereGridCursor,
-		CurrentGil,
-		BattleEnemyPointer,
-		BattlePlayerPointer,
-		RemoveDamageLimit,
-		RemoveHPLimit,
-		RemoveMPLimit,
-		MonsterArena,
-		BlitzballDataPointer,
-		BlitzballGamePointer,
-		BlitzballTeamSizes,
-		RemoveMPCheck,
-		RemoveHPCheck,
-		TidusOverdrive,
-		PartyList,
-		CurrentRoom,
-	}
+public enum OffsetType
+{
+    EquipmentBase,
+    PartyStatsBase,
+    ItemTypes,
+    ItemCounts,
+    DebugFlags,
+    PartyInBattleFlags,
+    PartyGainedApFlags,
+    AeonNames,
+    KeyItems,
+    AlBhed,
+    SphereGridNodes,
+    SphereGridCursor,
+    CurrentGil,
+    BattleEnemyPointer,
+    BattlePlayerPointer,
+    RemoveDamageLimit,
+    RemoveHPLimit,
+    RemoveMPLimit,
+    MonsterArena,
+    BlitzballDataPointer,
+    BlitzballGamePointer,
+    BlitzballTeamSizes,
+    RemoveMPCheck,
+    RemoveHPCheck,
+    TidusOverdrive,
+    PartyList,
+    CurrentRoom,
+}
 
-	public enum EquipmentOffset
-	{
-		Name = 0,
-		DamageFormula = 2,
-		Character = 4,
-		Type = 5,
-		AbilityCount = 0xB,
-		Appearance = 0x0C,
-		Ability0 = 0xE,
-		Ability1 = 0x10,
-		Ability2 = 0x12,
-		Ability3 = 0x14
-	}
+public enum EquipmentOffset
+{
+    Name = 0,
+    DamageFormula = 2,
+    Character = 4,
+    Type = 5,
+    AbilityCount = 0xB,
+    Appearance = 0x0C,
+    Ability0 = 0xE,
+    Ability1 = 0x10,
+    Ability2 = 0x12,
+    Ability3 = 0x14
+}
 
-	public enum BlitzballDataOffset
-	{
-		EquippedTechs = 0x266,
-		TechCount = 0x392,
-		PlayerLevels = 0x3CE,
-		TeamData = 0x41a,
-		ContractLength = 0x52a,
-		PlayerEXP = 0x568,
-	}
+public enum BlitzballDataOffset
+{
+    EquippedTechs = 0x266,
+    TechCount = 0x392,
+    PlayerLevels = 0x3CE,
+    TeamData = 0x41a,
+    ContractLength = 0x52a,
+    PlayerEXP = 0x568,
+}
 
-	public enum DebugFlags
-	{
-		EnemyInvincible,
-		PartyInvincible,
-		EnemyInput,
-		Unknown1,
-		FreeCamera,
-		Unknown2,
-		Unknown3,
-		Unknown4,
-		DisableAttackAnimation,
-		UnlimitedMP,
-		Unknown5,
-		Unknown6,
-		Unknown7,
-		Unknown8,
-		Unknown9,
-		Unknown10,
-		DisableRandomDamage,
-		DisableCriticalHit,
-		Unknown11,
-		Unknown12,
-		AlwaysOverdrive,
-		AlwaysCritical,
-		AlwaysDeal1,
-		AlwaysDeal10000,
-		AlwaysDeal99999,
-		AlwaysRareDrop,
-		Ap100X,
-		Gil100X,
-		DisableOverkill,
-		PermanentSensor,
-		Unknown13,
-		Unknown14,
-		Unknown15,
-		Unknown16,
-		Unknown17,
-		DisplayBattlefieldGrid,
-		Unknown18,
-		PlayerAlways1HP,
-		EnemyAlways1HP,
-		NegateAbility,
-		Unknown19,
-		Unknown20,
-		Unknown21,
-		BattleBehaviour
-	}
+public enum DebugFlags
+{
+    EnemyInvincible,
+    PartyInvincible,
+    EnemyInput,
+    Unknown1,
+    FreeCamera,
+    Unknown2,
+    Unknown3,
+    Unknown4,
+    DisableAttackAnimation,
+    UnlimitedMP,
+    Unknown5,
+    Unknown6,
+    Unknown7,
+    Unknown8,
+    Unknown9,
+    Unknown10,
+    DisableRandomDamage,
+    DisableCriticalHit,
+    Unknown11,
+    Unknown12,
+    AlwaysOverdrive,
+    AlwaysCritical,
+    AlwaysDeal1,
+    AlwaysDeal10000,
+    AlwaysDeal99999,
+    AlwaysRareDrop,
+    Ap100X,
+    Gil100X,
+    DisableOverkill,
+    PermanentSensor,
+    Unknown13,
+    Unknown14,
+    Unknown15,
+    Unknown16,
+    Unknown17,
+    DisplayBattlefieldGrid,
+    Unknown18,
+    PlayerAlways1HP,
+    EnemyAlways1HP,
+    NegateAbility,
+    Unknown19,
+    Unknown20,
+    Unknown21,
+    BattleBehaviour
+}
 
-	public enum BlockLength
-	{
-		SphereGridNode = 0x28,
-		BattleEntity = 0xF90,
-		MonsterArenaCount = 0x8B,
-		EquipmentItem = 0x16,
-		SkillFlags = 0xD
-	}
+public enum BlockLength
+{
+    SphereGridNode = 0x28,
+    BattleEntity = 0xF90,
+    MonsterArenaCount = 0x8B,
+    EquipmentItem = 0x16,
+    SkillFlags = 0xD
 }

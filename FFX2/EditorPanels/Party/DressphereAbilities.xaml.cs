@@ -1,162 +1,190 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Farplane.FFX2.Values;
-using MahApps.Metro.Controls;
 
-namespace Farplane.FFX2.EditorPanels
+namespace Farplane.FFX2.EditorPanels;
+
+/// <summary>
+/// Interaction logic for DressphereAbilities.xaml
+/// </summary>
+public partial class DressphereAbilities : UserControl
 {
-	/// <summary>
-	/// Interaction logic for DressphereAbilities.xaml
-	/// </summary>
-	public partial class DressphereAbilities : UserControl
-	{
-		private int _baseOffset = 0;
-		private Button[] buttons = new Button[16];
-		private int[] values = new int[16];
+    int _baseOffset = 0;
+    readonly Button[] buttons = new Button[16];
+    readonly int[] values = new int[16];
 
-		private int _selectedDs = 0;
+    int _selectedDs = 0;
 
-		public int SelectedIndex { get; set; } = 0;
+    public int SelectedIndex { get; set; } = 0;
 
-		public DressphereAbilities()
-		{
-			InitializeComponent();
-			//Dressphere.Items.Add("None");
-			//foreach (var dressphere in Dresspheres.GetDresspheres())
-			//	Dressphere.Items.Add(dressphere.Name);
-			//Dressphere.SelectedIndex = 0;
-			ReloadDresspheres();
-		}
+    public DressphereAbilities()
+    {
+        this.InitializeComponent();
+        //Dressphere.Items.Add("None");
+        //foreach (var dressphere in Dresspheres.GetDresspheres())
+        //	Dressphere.Items.Add(dressphere.Name);
+        //Dressphere.SelectedIndex = 0;
+        this.ReloadDresspheres();
+    }
 
-		public void ReloadDresspheres()
-		{
-			var dresses = Dresspheres.GetDresspheres().ToList();
-			dresses.RemoveAll(r => r.Special != -1 && r.Special != SelectedIndex);
+    public void ReloadDresspheres()
+    {
+        var dresses = Dresspheres.GetDresspheres().ToList();
+        dresses.RemoveAll(r => r.Special != -1 && r.Special != this.SelectedIndex);
 
-			var oldSelection = _selectedDs;
-			var newSelection = 0;
-			Dressphere.Items.Clear();
-			Dressphere.Items.Add("None");
-			foreach (var dress in dresses)
-			{
-				Dressphere.Items.Add(new ComboBoxItem {Content = dress.Name, Tag = dress.ID});
-				if (dress.ID == oldSelection)
-				{
-					newSelection = Dressphere.Items.Count - 1;
-					_selectedDs = dress.ID;
-				}
-			}
+        var oldSelection = this._selectedDs;
+        var newSelection = 0;
+        this.Dressphere.Items.Clear();
+        this.Dressphere.Items.Add("None");
+        foreach (var dress in dresses)
+        {
+            this.Dressphere.Items.Add(new ComboBoxItem { Content = dress.Name, Tag = dress.ID });
+            if (dress.ID == oldSelection)
+            {
+                newSelection = this.Dressphere.Items.Count - 1;
+                this._selectedDs = dress.ID;
+            }
+        }
 
-			Dressphere.SelectedIndex = newSelection;
-		}
+        this.Dressphere.SelectedIndex = newSelection;
+    }
 
-		public void RefreshAbilities()
-		{
-			var selectedId = (int)((Dressphere.SelectedItem as ComboBoxItem)?.Tag ?? 0);
+    public void RefreshAbilities()
+    {
+        var selectedId = (int)((this.Dressphere.SelectedItem as ComboBoxItem)?.Tag ?? 0);
 
-			if (selectedId == 0)
-				return;
+        if (selectedId == 0)
+        {
+            return;
+        }
 
-			var dressInfo = Dresspheres.GetDresspheres().FirstOrDefault(ds => ds.ID == selectedId);
-			if (dressInfo == null)
-				return;
-			
-			// Special dresspheres always fall under Yuna's offset
-			_baseOffset = (int) OffsetType.AbilityBase + (dressInfo.Special == -1 ? SelectedIndex * 0x6A0 : 0);
+        var dressInfo = Dresspheres.GetDresspheres().FirstOrDefault(ds => ds.ID == selectedId);
+        if (dressInfo == null)
+        {
+            return;
+        }
 
-			var abilities = dressInfo.Abilities;
+        // Special dresspheres always fall under Yuna's offset
+        this._baseOffset = (int)OffsetType.AbilityBase + (dressInfo.Special == -1 ? this.SelectedIndex * 0x6A0 : 0);
 
-			for (int a = 0; a < 16; a++)
-			{
-				var button = (Button) this.FindName($"Ability{a}");
-				if (button == null) continue;
+        var abilities = dressInfo.Abilities;
 
-				button.Content = string.Empty;
-				button.IsEnabled = false;
+        for (var a = 0; a < 16; a++)
+        {
+            var button = (Button)this.FindName($"Ability{a}");
+            if (button == null)
+            {
+                continue;
+            }
 
-				if (a >= abilities.Length) continue;
+            button.Content = string.Empty;
+            button.IsEnabled = false;
 
-				var abil = abilities[a];
+            if (a >= abilities.Length)
+            {
+                continue;
+            }
 
-				int currentAP = 0;
+            var abil = abilities[a];
 
-				if (abil.Offset != -1)
-					currentAP = LegacyMemoryReader.ReadInt16(_baseOffset + abil.Offset);
+            var currentAP = 0;
 
-				values[a] = currentAP;
+            if (abil.Offset != -1)
+            {
+                currentAP = LegacyMemoryReader.ReadInt16(this._baseOffset + abil.Offset);
+            }
 
-				string apText;
+            this.values[a] = currentAP;
 
-				if (currentAP >= abil.MasteredAP || abil.MasteredAP == 0)
-					apText = " [***]";
-				else
-					apText = $" {currentAP} / {abil.MasteredAP}";
+            string apText;
 
-				button.Content = $"{abil.Name} {apText}";
+            if (currentAP >= abil.MasteredAP || abil.MasteredAP == 0)
+            {
+                apText = " [***]";
+            }
+            else
+            {
+                apText = $" {currentAP} / {abil.MasteredAP}";
+            }
 
-				if (abil.ReadOnly == false) button.IsEnabled = true;
-			}
-		}
+            button.Content = $"{abil.Name} {apText}";
 
-		private void Dressphere_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			_selectedDs = (int)((Dressphere.SelectedItem as ComboBoxItem)?.Tag ?? 0);
-			RefreshAbilities();
-		}
+            if (!abil.ReadOnly)
+            {
+                button.IsEnabled = true;
+            }
+        }
+    }
 
-		private void AbilityButton_Click(object sender, RoutedEventArgs e)
-		{
-			if (Dressphere.SelectedIndex == 0 || _baseOffset == 0) return;
-			var abilityNum = int.Parse((sender as Button).Name.Substring(7));
-			var dressInfo = Dresspheres.GetDresspheres().FirstOrDefault(ds => ds.ID == Dressphere.SelectedIndex);
+    void Dressphere_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        this._selectedDs = (int)((this.Dressphere.SelectedItem as ComboBoxItem)?.Tag ?? 0);
+        this.RefreshAbilities();
+    }
 
-			var ability = dressInfo.Abilities[abilityNum];
+    void AbilityButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (this.Dressphere.SelectedIndex == 0 || this._baseOffset == 0)
+        {
+            return;
+        }
 
-			var apDialog = new AbilitySlider(ability.MasteredAP, values[abilityNum]);
-			var setAp = apDialog.ShowDialog();
+        var abilityNum = int.Parse((sender as Button).Name.Substring(7));
+        var dressInfo = Dresspheres.GetDresspheres().FirstOrDefault(ds => ds.ID == this.Dressphere.SelectedIndex);
 
-			if (!setAp.HasValue || setAp.Value != true) return;
-			var newAp = apDialog.AP;
+        var ability = dressInfo.Abilities[abilityNum];
 
-			LegacyMemoryReader.WriteBytes(_baseOffset + ability.Offset, BitConverter.GetBytes((ushort) newAp));
+        var apDialog = new AbilitySlider(ability.MasteredAP, this.values[abilityNum]);
+        var setAp = apDialog.ShowDialog();
 
-			RefreshAbilities();
-		}
+        if (!setAp.HasValue || !setAp.Value)
+        {
+            return;
+        }
 
-		private void MasterAll_Click(object sender, RoutedEventArgs e)
-		{
-			if (Dressphere.SelectedIndex == 0 || _baseOffset == 0) return;
-			var dressInfo = Dresspheres.GetDresspheres().FirstOrDefault(ds => ds.ID == Dressphere.SelectedIndex);
-			if (dressInfo == null) return;
+        var newAp = apDialog.AP;
 
-			var abilities = dressInfo.Abilities;
+        LegacyMemoryReader.WriteBytes(this._baseOffset + ability.Offset, BitConverter.GetBytes((ushort)newAp));
 
-			for (int a = 0; a < 16; a++)
-			{
-				if (a >= abilities.Length) continue;
+        this.RefreshAbilities();
+    }
 
-				var abil = abilities[a];
+    void MasterAll_Click(object sender, RoutedEventArgs e)
+    {
+        if (this.Dressphere.SelectedIndex == 0 || this._baseOffset == 0)
+        {
+            return;
+        }
 
-				int currentAP = 0;
+        var dressInfo = Dresspheres.GetDresspheres().FirstOrDefault(ds => ds.ID == this.Dressphere.SelectedIndex);
+        if (dressInfo == null)
+        {
+            return;
+        }
 
-				if (abil.Offset == -1 || abil.ReadOnly) continue;
+        var abilities = dressInfo.Abilities;
 
-				LegacyMemoryReader.WriteBytes(_baseOffset + abil.Offset, BitConverter.GetBytes((ushort) abil.MasteredAP));
-			}
+        for (var a = 0; a < 16; a++)
+        {
+            if (a >= abilities.Length)
+            {
+                continue;
+            }
 
-			RefreshAbilities();
-		}
-	}
+            var abil = abilities[a];
+
+            var currentAP = 0;
+
+            if (abil.Offset == -1 || abil.ReadOnly)
+            {
+                continue;
+            }
+
+            LegacyMemoryReader.WriteBytes(this._baseOffset + abil.Offset, BitConverter.GetBytes((ushort)abil.MasteredAP));
+        }
+
+        this.RefreshAbilities();
+    }
 }

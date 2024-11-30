@@ -1,73 +1,65 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Markup;
 using Farplane.Memory;
 
-namespace Farplane.FFX.EditorPanels.Debug
+namespace Farplane.FFX.EditorPanels.Debug;
+
+public partial class DebugPanel : UserControl
 {
-    public partial class DebugPanel : UserControl
+    readonly int _debugOffset = OffsetScanner.GetOffset(GameOffset.FFX_DebugFlags);
+
+    List<int> known;
+
+    List<int> unknown;
+
+    public DebugPanel() => this.InitializeComponent();
+
+    public void Refresh()
     {
-        private readonly int _debugOffset = OffsetScanner.GetOffset(GameOffset.FFX_DebugFlags);
-
-        private List<int> known;
-
-        private List<int> unknown;
-
-        public DebugPanel()
+        var array = GameMemory.Read<byte>(this._debugOffset, 32, isRelative: false);
+        var names = Enum.GetNames(typeof(DebugFlags));
+        var values = Enum.GetValues(typeof(DebugFlags));
+        this.known = [];
+        this.unknown = [];
+        for (var i = 0; i < names.Length; i++)
         {
-            InitializeComponent();
-        }
-
-        public void Refresh()
-        {
-            byte[] array = GameMemory.Read<byte>(_debugOffset, 32, isRelative: false);
-            string[] names = Enum.GetNames(typeof(DebugFlags));
-            Array values = Enum.GetValues(typeof(DebugFlags));
-            known = new List<int>();
-            unknown = new List<int>();
-            for (int i = 0; i < names.Length; i++)
+            if (names[i].StartsWith("Unknown"))
             {
-                if (names[i].StartsWith("Unknown"))
-                {
-                    unknown.Add((int)values.GetValue(i));
-                }
-                else
-                {
-                    known.Add((int)values.GetValue(i));
-                }
+                this.unknown.Add((int)values.GetValue(i));
             }
-            for (int j = 0; j < known.Count; j++)
+            else
             {
-                (StackDebugOptions.Children[j] as CheckBox).IsChecked = array[known[j]] == 1;
-            }
-            for (int k = 0; k < unknown.Count; k++)
-            {
-                (StackUnknown.Children[k] as CheckBox).IsChecked = array[unknown[k]] == 1;
+                this.known.Add((int)values.GetValue(i));
             }
         }
-
-        private void CheckBox_Changed(object sender, RoutedEventArgs e)
+        for (var j = 0; j < this.known.Count; j++)
         {
-            for (int i = 0; i < known.Count; i++)
-            {
-                GameMemory.Write(_debugOffset + known[i], (byte)((StackDebugOptions.Children[i] as CheckBox).IsChecked.Value ? 1 : 0), isRelative: false);
-            }
-            for (int j = 0; j < unknown.Count; j++)
-            {
-                GameMemory.Write(_debugOffset + unknown[j], (byte)((StackUnknown.Children[j] as CheckBox).IsChecked.Value ? 1 : 0), isRelative: false);
-            }
-            Refresh();
+            (this.StackDebugOptions.Children[j] as CheckBox).IsChecked = array[this.known[j]] == 1;
         }
-
-        private void CheckShowUnknownFlags_OnChecked(object sender, RoutedEventArgs e)
+        for (var k = 0; k < this.unknown.Count; k++)
         {
-            StackUnknown.Visibility = ((!CheckShowUnknownFlags.IsChecked.Value) ? Visibility.Hidden : Visibility.Visible);
-            TextUnknownWarning.Visibility = ((!CheckShowUnknownFlags.IsChecked.Value) ? Visibility.Collapsed : Visibility.Visible);
+            (this.StackUnknown.Children[k] as CheckBox).IsChecked = array[this.unknown[k]] == 1;
         }
+    }
+
+    void CheckBox_Changed(object sender, RoutedEventArgs e)
+    {
+        for (var i = 0; i < this.known.Count; i++)
+        {
+            GameMemory.Write(this._debugOffset + this.known[i], (byte)((this.StackDebugOptions.Children[i] as CheckBox).IsChecked.Value ? 1 : 0), isRelative: false);
+        }
+        for (var j = 0; j < this.unknown.Count; j++)
+        {
+            GameMemory.Write(this._debugOffset + this.unknown[j], (byte)((this.StackUnknown.Children[j] as CheckBox).IsChecked.Value ? 1 : 0), isRelative: false);
+        }
+        this.Refresh();
+    }
+
+    void CheckShowUnknownFlags_OnChecked(object sender, RoutedEventArgs e)
+    {
+        this.StackUnknown.Visibility = (!this.CheckShowUnknownFlags.IsChecked.Value) ? Visibility.Hidden : Visibility.Visible;
+        this.TextUnknownWarning.Visibility = (!this.CheckShowUnknownFlags.IsChecked.Value) ? Visibility.Collapsed : Visibility.Visible;
     }
 }

@@ -1,22 +1,18 @@
-﻿using System.Windows.Controls;
+using System.Windows.Controls;
 
-namespace Farplane.FFX.EditorPanels.SphereGridPanel
+namespace Farplane.FFX.EditorPanels.SphereGridPanel;
+
+/// <summary>
+/// Interaction logic for SphereGridPanel.xaml
+/// </summary>
+public partial class SphereGridPanel : UserControl
 {
-    /// <summary>
-    /// Interaction logic for SphereGridPanel.xaml
-    /// </summary>
-    public partial class SphereGridPanel : UserControl
+    readonly SphereGridEditor _sphereGridEditor = new();
+    public SphereGridPanel()
     {
-        private SphereGridEditor _sphereGridEditor = new SphereGridEditor();
-        public SphereGridPanel()
-        {
-            InitializeComponent();
-            SphereGridEditor.Content = _sphereGridEditor;
-        }
-
-        public void Refresh()
-        {
-            _sphereGridEditor.Refresh();
-        }
+        this.InitializeComponent();
+        this.SphereGridEditor.Content = this._sphereGridEditor;
     }
+
+    public void Refresh() => this._sphereGridEditor.Refresh();
 }
