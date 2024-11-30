@@ -73,7 +73,7 @@ public partial class MonsterArenaPanel : UserControl
                     this.Refresh();
                     textBox.SelectAll();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Error.Show("Please enter a value between 0 and 255");
                 }

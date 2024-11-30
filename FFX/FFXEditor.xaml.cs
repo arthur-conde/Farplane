@@ -145,7 +145,7 @@ public partial class FFXEditor : MetroWindow
                     break;
             }
         }
-        catch (NullReferenceException ex)
+        catch (NullReferenceException)
         {
             this.EditorContent.Content = this._notAvailablePanel;
         }

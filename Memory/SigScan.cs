@@ -154,7 +154,7 @@ public class SigScan
 
             return true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return false;
         }
@@ -267,7 +267,7 @@ public class SigScan
             // Pattern was not found. 
             return IntPtr.Zero;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return IntPtr.Zero;
         }

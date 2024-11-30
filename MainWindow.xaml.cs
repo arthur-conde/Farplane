@@ -86,7 +86,7 @@ public partial class MainWindow : MetroWindow
         }
     }
 
-    async void FFX_Click(object sender, RoutedEventArgs e)
+    void FFX_Click(object sender, RoutedEventArgs e)
     {
         this._configFlyout.IsOpen = false;
         var processSelect = new ProcessSelectWindow("FFX") { Owner = this };

@@ -175,8 +175,6 @@ public partial class DressphereAbilities : UserControl
 
             var abil = abilities[a];
 
-            var currentAP = 0;
-
             if (abil.Offset == -1 || abil.ReadOnly)
             {
                 continue;

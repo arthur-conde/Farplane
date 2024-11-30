@@ -83,7 +83,7 @@ public partial class BoostersPanel
                 {
                     this.Dispatcher.Invoke(this.UpdateSharedAPState);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // App probably exited, silent exception
                 }

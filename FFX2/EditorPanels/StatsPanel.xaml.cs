@@ -10,9 +10,6 @@ namespace Farplane.FFX2.EditorPanels;
 /// </summary>
 public partial class StatsPanel : UserControl
 {
-    public delegate void WriteData(object sender);
-    public event WriteData WriteDataEvent;
-    readonly int _partyIndex;
     int _statsOffset;
 
     public StatsPanel() => this.InitializeComponent();
@@ -90,7 +87,7 @@ public partial class StatsPanel : UserControl
         {
             MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-        this.Refresh(this._partyIndex);
+        this.Refresh(0);
     }
 
     public void Refresh(int partyIndex)
