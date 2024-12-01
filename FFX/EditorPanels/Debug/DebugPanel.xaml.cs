@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Farplane.Memory;
@@ -18,7 +19,7 @@ public partial class DebugPanel : UserControl
 
     public void Refresh()
     {
-        var array = GameMemory.Read<byte>(this._debugOffset, 32, isRelative: false);
+        var array = GameMemory.Read<byte>(this._debugOffset, (int)DebugFlags.Count + 1, isRelative: false);
         var names = Enum.GetNames(typeof(DebugFlags));
         var values = Enum.GetValues(typeof(DebugFlags));
         this.known = [];
@@ -36,11 +37,17 @@ public partial class DebugPanel : UserControl
         }
         for (var j = 0; j < this.known.Count; j++)
         {
-            (this.StackDebugOptions.Children[j] as CheckBox).IsChecked = array[this.known[j]] == 1;
+            if (this.StackDebugOptions.Children.OfType<CheckBox>().ElementAtOrDefault(j) is { } checkBox)
+            {
+                checkBox.IsChecked = array[this.known[j]] != 0;
+            }
         }
         for (var k = 0; k < this.unknown.Count; k++)
         {
-            (this.StackUnknown.Children[k] as CheckBox).IsChecked = array[this.unknown[k]] == 1;
+            if (this.StackUnknown.Children.OfType<CheckBox>().ElementAtOrDefault(k) is { } checkBox)
+            {
+                checkBox.IsChecked = array[this.unknown[k]] != 0;
+            }
         }
     }
 
