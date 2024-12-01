@@ -187,8 +187,6 @@ public partial class CreatureTrapping : UserControl
 
         var trapId = int.Parse(button.Name.Substring(4));
 
-
-
         var creatureSearchList = new List<string>();
         foreach (var creature in Creatures.CreatureList)
         {

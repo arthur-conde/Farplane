@@ -388,12 +388,11 @@ public partial class BattlePanel : UserControl
             }
         }
 
-
-
         BattleEntity.WriteBytes((EntityType)this.TabBattle.SelectedIndex, this.TabEntity.SelectedIndex, "status_turns_darkness", statusTurns);
 
         this.Refresh();
     }
+
     void CheckSilence_OnChecked(object sender, RoutedEventArgs e)
     {
         if (!this.CheckBattleState())
@@ -422,8 +421,6 @@ public partial class BattlePanel : UserControl
                 statusTurns = 3;
             }
         }
-
-
 
         BattleEntity.WriteBytes((EntityType)this.TabBattle.SelectedIndex, this.TabEntity.SelectedIndex, "status_turns_silence", statusTurns);
 

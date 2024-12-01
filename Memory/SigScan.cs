@@ -1,7 +1,6 @@
 using System;
 using System.Diagnostics;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Text;
 
 // 
@@ -44,32 +43,11 @@ namespace Farplane.Memory;
 public class SigScan
 {
     /// <summary> 
-    /// ReadProcessMemory 
-    ///  
-    ///     API import definition for ReadProcessMemory. 
-    /// </summary> 
-    /// <param name="hProcess">Handle to the process we want to read from.</param> 
-    /// <param name="lpBaseAddress">The base address to start reading from.</param> 
-    /// <param name="lpBuffer">The return buffer to write the read data to.</param> 
-    /// <param name="dwSize">The size of data we wish to read.</param> 
-    /// <param name="lpNumberOfBytesRead">The number of bytes successfully read.</param> 
-    /// <returns></returns> 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    static extern bool ReadProcessMemory(
-        IntPtr hProcess,
-        IntPtr lpBaseAddress,
-        [Out()] byte[] lpBuffer,
-        int dwSize,
-        out int lpNumberOfBytesRead
-        );
-
-    /// <summary> 
     /// m_vDumpedRegion 
     ///  
     ///     The memory dumped from the external process. 
     /// </summary> 
     byte[] m_vDumpedRegion;
-
 
     #region "sigScan Class Construction" 
     /// <summary> 
@@ -142,7 +120,7 @@ public class SigScan
             var bReturn = false;
 
             // Dump the memory. 
-            bReturn = ReadProcessMemory(
+            bReturn = WinAPI.ReadProcessMemory(
                 this.Process.Handle, this.Address, this.m_vDumpedRegion, (int)this.Size, out var nBytesRead
                 );
 

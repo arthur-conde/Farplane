@@ -122,7 +122,5 @@ public partial class StatsPanel : UserControl
         this.TextAccuracy.Text = statsBytes[(int)Offsets.StatOffsets.ModAccuracy].ToString();
         this.TextEvasion.Text = statsBytes[(int)Offsets.StatOffsets.ModEvasion].ToString();
         this.TextLuck.Text = statsBytes[(int)Offsets.StatOffsets.ModLuck].ToString();
-
-
     }
 }

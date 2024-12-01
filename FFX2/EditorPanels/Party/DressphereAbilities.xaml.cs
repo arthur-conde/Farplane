@@ -24,7 +24,7 @@ public partial class DressphereAbilities : UserControl
         this.InitializeComponent();
         //Dressphere.Items.Add("None");
         //foreach (var dressphere in Dresspheres.GetDresspheres())
-        //	Dressphere.Items.Add(dressphere.Name);
+        //    Dressphere.Items.Add(dressphere.Name);
         //Dressphere.SelectedIndex = 0;
         this.ReloadDresspheres();
     }

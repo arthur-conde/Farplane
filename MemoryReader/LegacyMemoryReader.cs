@@ -11,7 +11,6 @@ public static class LegacyMemoryReader
     static bool _isAttached
         => _memoryHandle != IntPtr.Zero && _memoryProcess != null && !_memoryProcess.HasExited;
 
-
     internal static void Attach(Process process)
     {
         Detach();
@@ -24,7 +23,9 @@ public static class LegacyMemoryReader
 
         // Open memory for reading and store handle
         var openHandle =
-            WinAPI.OpenProcess(56, false, process.Id);
+            WinAPI.OpenProcess(
+                ProcessAccessFlags.VirtualMemoryOperation | ProcessAccessFlags.VirtualMemoryRead | ProcessAccessFlags.VirtualMemoryWrite,
+                false, process.Id);
 
         if (openHandle == IntPtr.Zero)
         {
@@ -97,8 +98,7 @@ public static class LegacyMemoryReader
 
         var readBuffer = new byte[length];
 
-        var bytesRead = 0;
-        WinAPI.ReadProcessMemory(_memoryHandle, (pointer ? (IntPtr)0 : _memoryProcess.MainModule.BaseAddress) + address, readBuffer, length, bytesRead);
+        WinAPI.ReadProcessMemory(_memoryHandle, (pointer ? (IntPtr)0 : _memoryProcess.MainModule.BaseAddress) + address, readBuffer, length, out _);
         return readBuffer;
     }
 
@@ -111,10 +111,9 @@ public static class LegacyMemoryReader
 
         var writeBuffer = new byte[bytes.Length];
         bytes.CopyTo(writeBuffer, 0);
-        var bytesWritten = 0;
 
         var success = WinAPI.WriteProcessMemory(_memoryHandle, (pointer ? (IntPtr)0 : _memoryProcess.MainModule.BaseAddress) + address, writeBuffer,
-            writeBuffer.Length, bytesWritten);
+            writeBuffer.Length, out _);
 
         return success;
     }
@@ -126,10 +125,8 @@ public static class LegacyMemoryReader
             return false;
         }
 
-        var bytesWritten = 0;
-
         var success = WinAPI.WriteProcessMemory(_memoryHandle, (pointer ? (IntPtr)0 : _memoryProcess.MainModule.BaseAddress) + address, [bytes],
-            1, bytesWritten);
+            1, out _);
 
         return success;
     }

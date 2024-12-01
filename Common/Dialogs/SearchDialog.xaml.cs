@@ -67,8 +67,6 @@ public partial class SearchDialog : MetroWindow
 
     void TextCommandSearch_OnKeyDown(object sender, KeyEventArgs e)
     {
-
-
         switch (e.Key)
         {
             case Key.Enter:

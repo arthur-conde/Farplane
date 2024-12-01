@@ -110,8 +110,6 @@ public partial class PartyAbilities : UserControl
         }
 
         Party.ToggleSkillFlag(this._characterIndex, skill.BitOffset);
-
-
     }
 
     public void Refresh(int characterIndex)
@@ -134,7 +132,6 @@ public partial class PartyAbilities : UserControl
             button.Content = this._skills[i].Name;
         }
 
-
         for (var i = 0; i < this._specials.Length; i++)
         {
             var button = (Button)this._gridSpecial.GridBase.Children[i];
@@ -142,14 +139,12 @@ public partial class PartyAbilities : UserControl
             button.Content = this._specials[i].Name;
         }
 
-
         for (var i = 0; i < this._wMagic.Length; i++)
         {
             var button = (Button)this._gridWhiteMagic.GridBase.Children[i];
             button.Foreground = skillArray[this._wMagic[i].BitOffset] ? this._trueAbilityBrush : this._falseAbilityBrush;
             button.Content = this._wMagic[i].Name;
         }
-
 
         for (var i = 0; i < this._bMagic.Length; i++)
         {

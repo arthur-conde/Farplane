@@ -79,7 +79,6 @@ public partial class FFXEditor : MetroWindow
         (this.EditorTree.Items[0] as TreeViewItem).IsSelected = true;
     }
 
-
     void EditorTree_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
         var treeView = sender as TreeView;
@@ -195,7 +194,6 @@ public partial class FFXEditor : MetroWindow
             var shrinkWindow = (Storyboard)this.Resources["ShrinkWindow"];
             this.BeginStoryboard(shrinkWindow, HandoffBehavior.SnapshotAndReplace);
         }
-
 
         this._rolledUp = !this._rolledUp;
     }

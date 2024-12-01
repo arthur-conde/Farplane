@@ -117,7 +117,7 @@ public partial class FFX2Editor : MetroWindow
             this.Width = this._defaultWidth;
             this.Height = this._defaultHeight;
 
-            this.ButtonRollUp.Content = new Image() { Source = this._iconShrink, Width = 16, Height = 16 };
+            this.ButtonRollUp.Content = new Image { Source = this._iconShrink, Width = 16, Height = 16 };
         }
         else
         {
@@ -126,7 +126,7 @@ public partial class FFX2Editor : MetroWindow
 
             this.Height = 30;
             this.GridContent.Visibility = Visibility.Hidden;
-            this.ButtonRollUp.Content = new Image() { Source = this._iconExpand, Width = 16, Height = 16 };
+            this.ButtonRollUp.Content = new Image { Source = this._iconExpand, Width = 16, Height = 16 };
         }
         this._rolledUp = !this._rolledUp;
 

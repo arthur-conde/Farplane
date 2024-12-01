@@ -160,8 +160,7 @@ public static class OffsetScanner
 
     public static int GetOffset(GameOffset type)
     {
-        var foundOffset = _offsets.FirstOrDefault(offset => offset.Key == type).Value;
-        if (foundOffset == 0)
+        if (!_offsets.TryGetValue(type, out var foundOffset))
         {
             var searchSuccess = FindOffset(type);
             if (!searchSuccess)
@@ -172,7 +171,7 @@ public static class OffsetScanner
                     "Critical error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Environment.Exit(0);
             }
-            foundOffset = _offsets.FirstOrDefault(offset => offset.Key == type).Value;
+            foundOffset = _offsets[type];
         }
 
         return foundOffset;

@@ -19,7 +19,6 @@ public partial class MainWindow : MetroWindow
 {
     readonly ConfigFlyout _configFlyout = new();
 
-
     int _splashCounter = 10;
 
     public MainWindow()
@@ -129,7 +128,7 @@ public partial class MainWindow : MetroWindow
         }
 
         this._splashCounter = 10;
-        var credits = new CreditsWindow() { Owner = this, ShowInTaskbar = false, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+        var credits = new CreditsWindow { Owner = this, ShowInTaskbar = false, WindowStartupLocation = WindowStartupLocation.CenterOwner };
         credits.ShowDialog();
     }
 }

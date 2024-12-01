@@ -15,7 +15,6 @@ public partial class General : UserControl
 
     public void Refresh() => this.NumGil.Text = LegacyMemoryReader.ReadUInt32(this._offsetCurrentGil).ToString();
 
-
     void NumGil_OnKeyDown(object sender, KeyEventArgs e)
     {
         if (e.Key != Key.Enter)

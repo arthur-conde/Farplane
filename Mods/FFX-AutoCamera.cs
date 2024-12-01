@@ -22,7 +22,7 @@ public class AutoCameraMod : IFarplaneMod
 
     public void Configure(object parentWindow)
     {
-        
+
     }
     public string ConfigButton { get { return null; } }
     public bool AutoActivate { get { return true; } }
@@ -61,7 +61,7 @@ public class AutoCameraMod : IFarplaneMod
         if(_modActive) return ModState.Activated;
         return ModState.Deactivated;
     }
-	
+
     public void Activate()
     {
         if (_modActive) return;

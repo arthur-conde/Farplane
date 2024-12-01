@@ -138,7 +138,6 @@ public class AutoAbility
 
     ];
 
-
     public static AutoAbility FromID(int abilityID) => AutoAbilities.FirstOrDefault(a => a.ID == abilityID);
 
     public int ID { get; set; }

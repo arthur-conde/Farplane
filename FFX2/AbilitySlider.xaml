@@ -6,7 +6,6 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Farplane.FFX2"
         mc:Ignorable="d"
-                      
         Title="Change ability AP" Height="80" Width="360" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" BorderThickness="0" GlowBrush="Black">
         <Grid VerticalAlignment="Center">
             <Grid.ColumnDefinitions>

@@ -34,7 +34,6 @@ public partial class ConfigFlyout : Flyout
         this.CheckCloseWithGame.IsChecked = Settings.Default.CloseWithGame;
         this.CheckShowAllProcesses.IsChecked = Settings.Default.ShowAllProcesses;
 
-
         this.canSetTheme = true;
     }
 

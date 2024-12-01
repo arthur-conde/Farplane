@@ -51,7 +51,7 @@ public class FFXBreakDamageLimit : IFarplaneMod
     {
         if (_modActive) return;
         ModLogger.WriteLine("Activating Break Damage Limit");
-        
+
         var assembly = new []
         {
             "nop",

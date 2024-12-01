@@ -154,8 +154,6 @@ public class SphereGrid
         return selectedNode;
     }
 
-
-
     public static SphereGridNode ReadNode(int nodeIndex)
     {
         var offset = _offsetSphereGrid + 0x818 + (nodeIndex * _sizeSphereGridNode);

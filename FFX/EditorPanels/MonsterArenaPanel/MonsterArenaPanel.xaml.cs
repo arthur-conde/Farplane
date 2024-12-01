@@ -21,8 +21,10 @@ public partial class MonsterArenaPanel : UserControl
         // Initialize area list
         foreach (var area in MonsterArenaData.MonsterArenaAreas)
         {
-            this.ListMonsterArenaAreas.Items.Add(new TreeViewItem() { Header = area.Name });
-        } (this.ListMonsterArenaAreas.Items[0] as TreeViewItem).IsSelected = true;
+            this.ListMonsterArenaAreas.Items.Add(new TreeViewItem { Header = area.Name });
+        }
+
+        (this.ListMonsterArenaAreas.Items[0] as TreeViewItem).IsSelected = true;
     }
 
     public void Refresh()
@@ -54,7 +56,7 @@ public partial class MonsterArenaPanel : UserControl
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom
             };
-            var monsterPanel = new DockPanel() { Children = { monsterName, monsterCount }, Margin = new Thickness(5) };
+            var monsterPanel = new DockPanel { Children = { monsterName, monsterCount }, Margin = new Thickness(5) };
 
             monsterCount.KeyDown += (sender, args) =>
             {

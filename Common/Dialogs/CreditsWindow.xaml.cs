@@ -31,7 +31,6 @@ public partial class CreditsWindow : MetroWindow
         this.TextMarquee.InvalidateVisual();
     }
 
-
     void CreditsWindow_OnLoaded(object sender, RoutedEventArgs e)
     {
         var doubleAnimation = new DoubleAnimation

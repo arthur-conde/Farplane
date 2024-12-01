@@ -322,32 +322,32 @@ public class BlitzballValues
 
     public static BlitzballValue[] TournamentStates =
     [
-        new BlitzballValue() {Index = 0x00, Name = "No Data"},
-        new BlitzballValue() {Index = 0x01, Name = "No Tournament"},
-        new BlitzballValue() {Index = 0x02, Name = "No Tournament"},
-        new BlitzballValue() {Index = 0x03, Name = "No Tournament"},
-        new BlitzballValue() {Index = 0x04, Name = "New Tournament"},
-        new BlitzballValue() {Index = 0x05, Name = "New Tournament"},
-        new BlitzballValue() {Index = 0x06, Name = "New Tournament"},
-        new BlitzballValue() {Index = 0x14, Name = "Round 1"},
-        new BlitzballValue() {Index = 0x15, Name = "Round 2"},
-        new BlitzballValue() {Index = 0x16, Name = "Round 3"},
+        new BlitzballValue {Index = 0x00, Name = "No Data"},
+        new BlitzballValue {Index = 0x01, Name = "No Tournament"},
+        new BlitzballValue {Index = 0x02, Name = "No Tournament"},
+        new BlitzballValue {Index = 0x03, Name = "No Tournament"},
+        new BlitzballValue {Index = 0x04, Name = "New Tournament"},
+        new BlitzballValue {Index = 0x05, Name = "New Tournament"},
+        new BlitzballValue {Index = 0x06, Name = "New Tournament"},
+        new BlitzballValue {Index = 0x14, Name = "Round 1"},
+        new BlitzballValue {Index = 0x15, Name = "Round 2"},
+        new BlitzballValue {Index = 0x16, Name = "Round 3"},
     ];
 
     public static BlitzballValue[] LeagueStates =
     [
-        new BlitzballValue() {Index = 0x00, Name = "Round 1"},
-        new BlitzballValue() {Index = 0x01, Name = "Round 2"},
-        new BlitzballValue() {Index = 0x02, Name = "Round 3"},
-        new BlitzballValue() {Index = 0x03, Name = "Round 4"},
-        new BlitzballValue() {Index = 0x04, Name = "Round 5"},
-        new BlitzballValue() {Index = 0x05, Name = "Round 6"},
-        new BlitzballValue() {Index = 0x06, Name = "Round 7"},
-        new BlitzballValue() {Index = 0x07, Name = "Round 8"},
-        new BlitzballValue() {Index = 0x08, Name = "Round 9"},
-        new BlitzballValue() {Index = 0x09, Name = "Round 10"},
-        new BlitzballValue() {Index = 0x64, Name = "Round 10"},
-        new BlitzballValue() {Index = 0x0a, Name = "New Season"},
+        new BlitzballValue {Index = 0x00, Name = "Round 1"},
+        new BlitzballValue {Index = 0x01, Name = "Round 2"},
+        new BlitzballValue {Index = 0x02, Name = "Round 3"},
+        new BlitzballValue {Index = 0x03, Name = "Round 4"},
+        new BlitzballValue {Index = 0x04, Name = "Round 5"},
+        new BlitzballValue {Index = 0x05, Name = "Round 6"},
+        new BlitzballValue {Index = 0x06, Name = "Round 7"},
+        new BlitzballValue {Index = 0x07, Name = "Round 8"},
+        new BlitzballValue {Index = 0x08, Name = "Round 9"},
+        new BlitzballValue {Index = 0x09, Name = "Round 10"},
+        new BlitzballValue {Index = 0x64, Name = "Round 10"},
+        new BlitzballValue {Index = 0x0a, Name = "New Season"},
     ];
 }
 

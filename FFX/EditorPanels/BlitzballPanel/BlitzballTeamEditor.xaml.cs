@@ -25,13 +25,12 @@ public partial class BlitzballTeamEditor : UserControl
 
         for (var i = 0; i < BlitzballValues.Teams.Length - 1; i++)
         {
-            var teamTab = new TabItem() { Header = BlitzballValues.Teams[i].Name };
+            var teamTab = new TabItem { Header = BlitzballValues.Teams[i].Name };
             ControlsHelper.SetHeaderFontSize(teamTab, 16);
             this.TabTeam.Items.Add(teamTab);
         }
 
         this.TabTeam.SelectedIndex = 0;
-
 
         this._canWriteData = true;
     }
@@ -143,8 +142,6 @@ public partial class BlitzballTeamEditor : UserControl
     void MovePlayer(int playerIndex, int destTeamIndex, int destPos)
     {
         var blitzData = Blitzball.ReadBlitzballData();
-
-
 
         // Find index of player if already assigned to team
         var playerTeamIndex = Array.IndexOf(blitzData.TeamData, (byte)playerIndex);

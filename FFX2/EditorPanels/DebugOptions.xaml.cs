@@ -61,8 +61,8 @@ public partial class DebugOptions : UserControl
             var offset = Enum.Parse(typeof(Offsets.DebugFlags), (string)checkBox.Tag);
             LegacyMemoryReader.WriteBytes((int)offset, checkedBytes);
         }
-        catch { }
-
-
+        catch
+        {
+        }
     }
 }

@@ -23,6 +23,7 @@ public static partial class GameMemory
     public static string[] FFX_Hashes =
     [
         "3D13E5ED53821DF8DB204CD3C27D470C5C220B18E16849FC4440996C15F277E1", // FFX
+        "7B00191231BB04903F5A59A18FEEACFF718C1D0AAB038FBF966586EDF75E4E27", // FFX with 4GB patch
         "D7F08CDA89DBCD6F429814E9523CE7A63A094417442A025573AFBBEF3251EF20", // FFX-2
     ];
 
@@ -65,7 +66,7 @@ public static partial class GameMemory
 
         // Create new instance of the SHA256 service provider
         var shaCrypt = new System.Security.Cryptography.SHA256CryptoServiceProvider();
-        var stringHash = new StringBuilder();
+        string stringHash;
 
         try
         {
@@ -77,11 +78,10 @@ public static partial class GameMemory
             var moduleHash = shaCrypt.ComputeHash(exeBytes);
 
             // Convert hash to string
-
-            foreach (var hashByte in moduleHash)
-            {
-                stringHash.Append(hashByte.ToString("X2"));
-            }
+            stringHash = moduleHash.Aggregate(
+                new StringBuilder(),
+                (sb, hb) => sb.Append(hb.ToString("X2")),
+                sb => sb.ToString());
         }
         catch
         {
@@ -90,9 +90,8 @@ public static partial class GameMemory
             return proceed == MessageBoxResult.Yes;
         }
 
-
         // Compare against known hashes
-        if (!FFX_Hashes.Contains(stringHash.ToString()))
+        if (!FFX_Hashes.Contains(stringHash))
         {
             // No matching hash
             Console.WriteLine("Hash: " + stringHash);
@@ -159,7 +158,6 @@ public static partial class GameMemory
         }
 
         return MemorySharp.Read<T>((IntPtr)offset, isRelative);
-        ;
     }
 
     public static T[] Read<T>(int offset, int count, bool isRelative = true)
@@ -191,6 +189,4 @@ public static partial class GameMemory
 
         MemorySharp.Write((IntPtr)offset, value, isRelative);
     }
-
-
 }

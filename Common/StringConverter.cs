@@ -76,10 +76,8 @@ public static class StringConverter
 
         }
 
-
         return outBytes.ToString();
     }
-
 
     public static Dictionary<byte, char> ffxToASCII = new()
     {

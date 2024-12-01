@@ -143,7 +143,7 @@ public class FFXHardBattleMod : IFarplaneMod
 
                     GameMemory.Write<int>(entityOffset + StructHelper.GetFieldOffset<BattleEntityData>("mp_max"),
                         newMP, false);
-                
+
                     GameMemory.Write<int>(entityOffset + StructHelper.GetFieldOffset<BattleEntityData>("mp_max2"),
                         newMP, false);
 
@@ -164,12 +164,10 @@ public class FFXHardBattleMod : IFarplaneMod
                     GameMemory.Write<byte>(entityOffset + StructHelper.GetFieldOffset<BattleEntityData>("evasion"),
                         (byte)newEvasion, false);
 
-
                     changedCreature[i] = true;
                 }
             }
             changedThisBattle = true;
         }
-        
     }
 }

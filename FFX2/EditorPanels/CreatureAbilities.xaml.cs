@@ -125,7 +125,7 @@ public partial class CreatureAbilities : UserControl
     {
         this.Refresh();
 
-        var inputBox = new TextBox() { Text = defaultText, SelectionStart = 0, SelectionLength = defaultText.Length, ContextMenu = null };
+        var inputBox = new TextBox { Text = defaultText, SelectionStart = 0, SelectionLength = defaultText.Length, ContextMenu = null };
         button.Content = inputBox;
         button.UpdateLayout();
         inputBox.Focus();

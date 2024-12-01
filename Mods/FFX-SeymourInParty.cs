@@ -25,13 +25,13 @@ public class SeymourMod : IFarplaneMod
     private static int offsetInParty = StructHelper.GetFieldOffset<PartyMember>("InParty");
     private static int offsetSeymourInParty = offsetSeymourData + offsetInParty;
     private static int updateTicks = 0;
-    
+
     public void Configure(object parentWindow)
     {
-        var win = new MetroWindow() {Title="Configuration", Width=300, Height=100, WindowStartupLocation = WindowStartupLocation.CenterScreen, Owner=(Window)parentWindow, BorderThickness = new Thickness(0), GlowBrush=Brushes.Black, ResizeMode = ResizeMode.NoResize};
-        var check = new CheckBox() {Content="Add/remove Seymour automatically", Margin = new Thickness(5), IsChecked=ModSettings.ReadSetting<bool>("AutoAddRemove") };
-        var butt = new Button() {Content="Save", Margin = new Thickness(5) };
-        var stack = new StackPanel() {Children = { check, butt }, Margin= new Thickness(5) };
+        var win = new MetroWindow {Title="Configuration", Width=300, Height=100, WindowStartupLocation = WindowStartupLocation.CenterScreen, Owner=(Window)parentWindow, BorderThickness = new Thickness(0), GlowBrush=Brushes.Black, ResizeMode = ResizeMode.NoResize};
+        var check = new CheckBox {Content="Add/remove Seymour automatically", Margin = new Thickness(5), IsChecked=ModSettings.ReadSetting<bool>("AutoAddRemove") };
+        var butt = new Button {Content="Save", Margin = new Thickness(5) };
+        var stack = new StackPanel {Children = { check, butt }, Margin= new Thickness(5) };
         butt.Click += (sender, args) =>
         {
             ModSettings.WriteSetting("AutoAddRemove", check.IsChecked);
@@ -101,7 +101,7 @@ public class SeymourMod : IFarplaneMod
         ModLogger.WriteLine("Unexpected assembly code, aborting code write.");
         return false;
     }
-	
+
     public void Activate()
     {
         if (_modActive) return;

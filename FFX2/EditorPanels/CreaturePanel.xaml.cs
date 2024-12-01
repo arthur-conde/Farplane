@@ -33,7 +33,7 @@ public partial class CreaturePanel : UserControl
             this.TabCreatures.Items.Add(tabCreature);
         }
 
-        this.TabCreatures.Items.Add(new Button() { Content = "Test" });
+        this.TabCreatures.Items.Add(new Button { Content = "Test" });
         this.UpdateCreaturesMethod();
         UpdateCreatures += this.UpdateCreaturesMethod;
     }

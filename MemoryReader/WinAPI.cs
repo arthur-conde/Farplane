@@ -7,7 +7,7 @@ class WinAPI
 {
     [DllImport("kernel32.dll")]
     public static extern IntPtr OpenProcess(
-        int processAccess,
+        ProcessAccessFlags processAccess,
         bool bInheritHandle,
         int processId
     );
@@ -18,7 +18,7 @@ class WinAPI
         IntPtr lpBaseAddress,
         [Out] byte[] lpBuffer,
         int dwSize,
-        [Out] int lpNumberOfBytesRead
+        out int lpNumberOfBytesRead
     );
 
     [DllImport("kernel32.dll", SetLastError = true)]
@@ -27,7 +27,7 @@ class WinAPI
         IntPtr lpBaseAddress,
         [Out] byte[] lpBuffer,
         int nSize,
-        [Out] int lpNumberOfBytesWritten
+        out int lpNumberOfBytesWritten
     );
 }
 

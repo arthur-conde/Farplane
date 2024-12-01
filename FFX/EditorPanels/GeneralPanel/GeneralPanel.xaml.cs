@@ -35,7 +35,6 @@ public partial class GeneralPanel : UserControl
         this.TextGil.Text = Data.General.CurrentGil.ToString();
         this.TextTidusOverdrive.Text = Data.General.TidusOverdrive.ToString();
 
-
         var partyList = Data.Party.GetActiveParty();
         for (var i = 0; i < 8; i++)
         {

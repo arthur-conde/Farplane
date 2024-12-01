@@ -116,7 +116,7 @@ public partial class AccessoriesEditor : UserControl
         comboItemType.SelectedIndex = selItem > 68 ? 0 : selItem + 1;
         comboItemType.Width = 140;
 
-        var buttonPanel = new StackPanel() { Orientation = Orientation.Horizontal };
+        var buttonPanel = new StackPanel { Orientation = Orientation.Horizontal };
 
         buttonPanel.Children.Add(comboItemType);
         buttonPanel.Children.Add(textItemCount);

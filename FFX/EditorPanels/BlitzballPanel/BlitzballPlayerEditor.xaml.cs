@@ -36,7 +36,7 @@ public partial class BlitzballPlayerEditor : UserControl
 
         foreach (var player in BlitzballValues.Players)
         {
-            this.TreeBlitzPlayers.Items.Add(new TreeViewItem() { Header = player.Name });
+            this.TreeBlitzPlayers.Items.Add(new TreeViewItem { Header = player.Name });
         }
 
         this.KnownTechs.Content = this._buttons;
@@ -53,8 +53,6 @@ public partial class BlitzballPlayerEditor : UserControl
         var player = this._players[this._playerIndex];
         var skillIndex = BlitzballValues.Techs[buttonIndex].Index;
         var skillData = 0;
-
-
 
         if (buttonIndex < 30)
         {

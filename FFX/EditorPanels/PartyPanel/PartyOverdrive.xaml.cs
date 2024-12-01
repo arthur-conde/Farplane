@@ -32,7 +32,7 @@ public partial class PartyOverdrive : UserControl
 
         for (var i = 0; i < gridRows; i++)
         {
-            this.GridOverdrive.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(30) });
+            this.GridOverdrive.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
         }
 
         for (var i = 0; i < OverdriveMode.OverdriveModes.Length; i++)
@@ -205,7 +205,6 @@ public partial class PartyOverdrive : UserControl
                     BitConverter.ToUInt16(odCounters, OverdriveMode.OverdriveModes[i].BitIndex * 2).ToString();
             }
         }
-
 
         this._refreshing = false;
     }

@@ -145,7 +145,6 @@ public partial class EquipmentPanel : UserControl
             return;
         }
 
-
         if (this._currentItem.Character < 7)
         {
             var nameString = EquipName.EquipNames[this._currentItem.Character][this._currentItem.Name];

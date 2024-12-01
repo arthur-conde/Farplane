@@ -66,8 +66,6 @@ public partial class GarmentGridEditor : UserControl
         this.Refresh();
     }
 
-
-
     public void Refresh()
     {
         this._refreshing = true;
