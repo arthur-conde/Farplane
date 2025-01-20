@@ -153,4 +153,16 @@ public partial class AeonAbilities : UserControl
             button.Content = this._bMagic[i].Name;
         }
     }
+
+    void LearnAll(params Ability[] abilities)
+    {
+        var skillOffsets = abilities.Select(e => e.BitOffset).ToArray();
+        Party.SetSkillFlags(this._characterIndex, true, skillOffsets);
+        this.Refresh(this._characterIndex);
+    }
+
+    void LearnAll_Skills(object sender, RoutedEventArgs e) => this.LearnAll(this._skills);
+    void LearnAll_Special(object sender, RoutedEventArgs e) => this.LearnAll(this._specials);
+    void LearnAll_WhiteMagic(object sender, RoutedEventArgs e) => this.LearnAll(this._wMagic);
+    void LearnAll_BlackMagic(object sender, RoutedEventArgs e) => this.LearnAll(this._bMagic);
 }

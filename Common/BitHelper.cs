@@ -31,9 +31,15 @@ public static class BitHelper
 
     public static byte SetBit(byte source, int bitIndex, bool bitValue)
     {
-        var mask = bitValue ? (1 << bitIndex) : ~(1 << bitIndex);
-        var newByte = source & (byte)mask;
-        return (byte)newByte;
+        var mask = (byte)(1 << bitIndex);
+        if (bitValue)
+        {
+            return (byte)(source | mask);
+        }
+        else
+        {
+            return (byte)(source & ~mask);
+        }
     }
 
     public static byte ToggleBit(byte source, int bitIndex)

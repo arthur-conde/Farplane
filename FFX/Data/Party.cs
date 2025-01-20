@@ -139,6 +139,41 @@ public static class Party
         GameMemory.Write(offset, skillBytes, false);
     }
 
+    public static void SetSkillFlag(int partyIndex, int skillFlag, bool learned)
+    {
+        var offset = _offsetParty + (partyIndex * _blockLength) + (int)Marshal.OffsetOf<PartyMember>("SkillFlags");
+        var byteIndex = skillFlag / 8;
+        var bitIndex = skillFlag % 8;
+
+        var partyMember = ReadPartyMember(partyIndex);
+        var skillBytes = partyMember.SkillFlags;
+
+        var newByte = BitHelper.SetBit(skillBytes[byteIndex], bitIndex, learned);
+        skillBytes[byteIndex] = newByte;
+
+        GameMemory.Write(offset, skillBytes, false);
+    }
+
+    public static void SetSkillFlags(int partyIndex, bool learned, params int[] skillsFlag)
+    {
+        var offset = _offsetParty + (partyIndex * _blockLength) + (int)Marshal.OffsetOf<PartyMember>("SkillFlags");
+
+        var partyMember = ReadPartyMember(partyIndex);
+        var skillBytes = partyMember.SkillFlags;
+
+        for (var i = 0; i < skillsFlag.Length; i++)
+        {
+            var skillFlag = skillsFlag[i];
+            var byteIndex = skillFlag / 8;
+            var bitIndex = skillFlag % 8;
+
+            var newByte = BitHelper.SetBit(skillBytes[byteIndex], bitIndex, learned);
+            skillBytes[byteIndex] = newByte;
+        }
+
+        GameMemory.Write(offset, skillBytes, false);
+    }
+
     public static int GetMemoryOffset(int partyIndex) => _offsetParty + (partyIndex * _blockLength);
 
     public static void WritePartyMember(int partyIndex, PartyMember item)

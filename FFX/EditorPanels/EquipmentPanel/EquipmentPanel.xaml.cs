@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using ControlzEx.Standard;
 using Farplane.Common;
 using Farplane.Common.Dialogs;
 using Farplane.FFX.Data;
@@ -22,6 +23,9 @@ public partial class EquipmentPanel : UserControl
 {
     const string NameUnknown = "????";
     const string NameEmpty = "< Empty >";
+
+    private int? _storedAbilityCount;
+    private int[] _storedAbilities;
 
     readonly BitmapImage[] _icons =
     [
@@ -504,5 +508,112 @@ public partial class EquipmentPanel : UserControl
         {
             Error.Show("Please enter a number between 0 and 255.");
         }
+    }
+
+    void Abilities_ClearClipboard(object sender, RoutedEventArgs e)
+    {
+        this._storedAbilityCount = null;
+        this._storedAbilities = null;
+    }
+
+    void Abilities_Copy(object sender, RoutedEventArgs e)
+    {
+        if (this._refreshing)
+        {
+            return;
+        }
+
+        this._storedAbilityCount = this._currentItem.AbilityCount;
+        this._storedAbilities = [0xFF, 0xFF, 0xFF, 0xFF];
+        for (var slot = 0; slot < 4; slot++)
+        {
+            if (slot >= this._currentItem.AbilityCount)
+            {
+                continue;
+            }
+
+            var ability = AutoAbility.FromID(this._currentItem.Abilities[slot]);
+
+            if (ability != null)
+            {
+                this._storedAbilities[slot] = ability.ID;
+            }
+        }
+    }
+
+    void Abilities_Paste(object sender, RoutedEventArgs e)
+    {
+        if (this._refreshing)
+        {
+            return;
+        }
+
+        if (this._storedAbilityCount != null)
+        {
+            var offset = Equipment.Offset + (this._selectedItem * Equipment.BlockLength) + (int)Marshal.OffsetOf<EquipmentItem>("AbilityCount");
+            GameMemory.Write(offset, (byte)this._storedAbilityCount, false);
+
+            this.RefreshSelectedItem();
+
+            if (this._storedAbilities != null)
+            {
+                for (var slot = 0; slot < 4; slot++)
+                {
+                    if (slot >= this._currentItem.AbilityCount)
+                    {
+                        continue;
+                    }
+
+                    var ability = AutoAbility.FromID(this._storedAbilities[slot]);
+
+                    if (ability != null)
+                    {
+                        this.WriteAbility(this._selectedItem, slot, (ushort)ability.ID);
+                    }
+                }
+            }
+        }
+
+        this.RefreshSelectedItem();
+    }
+
+    void Abilities_WeaponPreset(object sender, RoutedEventArgs e)
+    {
+        if (this._refreshing)
+        {
+            return;
+        }
+
+        var offset = Equipment.Offset + (this._selectedItem * Equipment.BlockLength) + (int)Marshal.OffsetOf<EquipmentItem>("AbilityCount");
+        GameMemory.Write(offset, (byte)4, false);
+
+        this.RefreshSelectedItem();
+
+        this.WriteAbility(this._selectedItem, 0, (ushort)0x8019);
+        this.WriteAbility(this._selectedItem, 1, (ushort)0x8057);
+        this.WriteAbility(this._selectedItem, 2, (ushort)0x800D);
+        this.WriteAbility(this._selectedItem, 3, (ushort)0xFF);
+
+        this.RefreshSelectedItem();
+    }
+
+    void Abilities_ArmorPreset(object sender, RoutedEventArgs e)
+    {
+        if (this._refreshing)
+        {
+            return;
+        }
+
+        var offset = Equipment.Offset + (this._selectedItem * Equipment.BlockLength) + (int)Marshal.OffsetOf<EquipmentItem>("AbilityCount");
+        GameMemory.Write(offset, (byte)4, false);
+
+        this.RefreshSelectedItem();
+
+        this.WriteAbility(this._selectedItem, 0, (ushort)0x8056);
+        this.WriteAbility(this._selectedItem, 1, (ushort)0x8006);
+        this.WriteAbility(this._selectedItem, 2, (ushort)0x8030);
+        this.WriteAbility(this._selectedItem, 3, (ushort)0x8080);
+
+        this.RefreshSelectedItem();
     }
 }
