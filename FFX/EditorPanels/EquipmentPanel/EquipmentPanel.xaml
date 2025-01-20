@@ -142,18 +142,10 @@
                                     </ToolBar>
                                 </ToolBarTray>
                                 <StackPanel Name="AbilityPanel" Margin="2">
-                                    <Button Name="Ability0"
-            Margin="2"
-            Click="AbilityButton_Click" />
-                                    <Button Name="Ability1"
-            Margin="2"
-            Click="AbilityButton_Click" />
-                                    <Button Name="Ability2"
-            Margin="2"
-            Click="AbilityButton_Click" />
-                                    <Button Name="Ability3"
-            Margin="2"
-            Click="AbilityButton_Click" />
+                                    <Button Name="Ability0" Margin="2" Click="AbilityButton_Click" />
+                                    <Button Name="Ability1" Margin="2" Click="AbilityButton_Click" />
+                                    <Button Name="Ability2" Margin="2" Click="AbilityButton_Click" />
+                                    <Button Name="Ability3" Margin="2" Click="AbilityButton_Click" />
                                 </StackPanel>
                             </StackPanel>
                         </GroupBox>
