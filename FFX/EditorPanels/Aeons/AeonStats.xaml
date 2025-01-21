@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Farplane.FFX.EditorPanels.Aeons.AeonStats"
+<UserControl x:Class="Farplane.FFX.EditorPanels.Aeons.AeonStats"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,28 @@
              d:DesignWidth="360"
              mc:Ignorable="d">
     <GroupBox Header="Stats">
-        <Grid>
+        <DockPanel LastChildFill="True">
+            <ToolBarTray DockPanel.Dock="Top">
+                <ToolBar>
+                    <TextBlock VerticalAlignment="Center" Text="Max" />
+                    <Button Content="All" Click="MaxAll_Click" />
+                    <Separator />
+                    <Button Content="HP" Click="MaxHP_Click"/>
+                    <Button Content="MP" Click="MaxMP_Click"/>
+                    <Separator />
+                    <Button Content="Strength" Click="MaxStrength_Click"/>
+                    <Button Content="Defense" Click="MaxDefense_Click"/>
+                    <Separator />
+                    <Button Content="Magic" Click="MaxMagic_Click" />
+                    <Button Content="Magic Defence" Click="MaxMagicDefense_Click" />
+                    <Separator />
+                    <Button Content="Agility" Click="MaxAgility_Click" />
+                    <Button Content="Luck" Click="MaxLuck_Click" />
+                    <Button Content="Evasion" Click="MaxEvasion_Click" />
+                    <Button Content="Accuracy" Click="MaxAccuracy_Click" />
+                </ToolBar>
+            </ToolBarTray>
+            <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
@@ -137,5 +158,6 @@
                 </DockPanel>
             </StackPanel>
         </Grid>
+        </DockPanel>
     </GroupBox>
 </UserControl>

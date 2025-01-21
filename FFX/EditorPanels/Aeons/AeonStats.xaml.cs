@@ -122,4 +122,90 @@ public partial class AeonStats : UserControl
             return;
         }
     }
+
+    void MaxAll_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute(this._characterIndex, nameof(PartyMember.BaseHp), 99999);
+        Party.SetPartyMemberAttribute(this._characterIndex, nameof(PartyMember.BaseMp), 9999);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseStrength), 255);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseDefense), 255);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseMagic), 255);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseMagicDefense), 255);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseAgility), 255);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseLuck), 255);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseEvasion), 255);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseAccuracy), 255);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxHP_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute(this._characterIndex, nameof(PartyMember.BaseHp), 99999);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxMP_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute(this._characterIndex, nameof(PartyMember.BaseMp), 9999);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxStrength_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseStrength), 255);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxDefense_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseDefense), 255);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxMagic_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseMagic), 255);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxMagicDefense_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseMagicDefense), 255);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxAgility_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseAgility), 255);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxLuck_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseLuck), 255);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxEvasion_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseEvasion), 255);
+        this.Refresh(this._characterIndex);
+    }
+
+    void MaxAccuracy_Click(object sender, RoutedEventArgs e)
+    {
+        var partyMember = Party.ReadPartyMember(this._characterIndex);
+        Party.SetPartyMemberAttribute<byte>(this._characterIndex, nameof(PartyMember.BaseAccuracy), 255);
+        this.Refresh(this._characterIndex);
+    }
 }
