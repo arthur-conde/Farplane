@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Farplane.FFX.Data;
 
 namespace Farplane.FFX2.EditorPanels;
 
@@ -122,5 +123,157 @@ public partial class StatsPanel : UserControl
         this.TextAccuracy.Text = statsBytes[(int)Offsets.StatOffsets.ModAccuracy].ToString();
         this.TextEvasion.Text = statsBytes[(int)Offsets.StatOffsets.ModEvasion].ToString();
         this.TextLuck.Text = statsBytes[(int)Offsets.StatOffsets.ModLuck].ToString();
+    }
+
+    void MaxAll_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.HPModifier, BitConverter.GetBytes(99999U));
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.MPModifier, BitConverter.GetBytes(99999U));
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModStrength, [0xFF]);
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModDefense, [0xFF]);
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModMagic, [0xFF]);
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModMagicDefense, [0xFF]);
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModAgility, [0xFF]);
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModAccuracy, [0xFF]);
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModEvasion, [0xFF]);
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModLuck, [0xFF]);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxHP_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.HPModifier, BitConverter.GetBytes(99999U));
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxMP_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.MPModifier, BitConverter.GetBytes(99999U));
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxStrength_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModStrength, [0xFF]);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxDefense_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModDefense, [0xFF]);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxMagic_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModMagic, [0xFF]);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxMagicDefense_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModMagicDefense, BitConverter.GetBytes(99999U));
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxAgility_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModAgility, [0xFF]);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxLuck_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModLuck, [0xFF]);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxEvasion_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModEvasion, [0xFF]);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
+    }
+
+    void MaxAccuracy_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            LegacyMemoryReader.WriteBytes(this._statsOffset + (int)Offsets.StatOffsets.ModAccuracy, [0xFF]);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred:\n{ex.Message}", "Error updating value", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        this.Refresh(0);
     }
 }
