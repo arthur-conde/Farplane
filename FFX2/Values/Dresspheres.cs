@@ -427,7 +427,7 @@ public static class Dresspheres
             new DressphereAbility {Name = "Silenceproof", MasteredAP = 10, Offset = 0xDC},
             new DressphereAbility {Name = "Pointlessproof", MasteredAP = 10, Offset = 0xDE},
             new DressphereAbility {Name = "SOS Regen", MasteredAP = 30, Offset = 0x52E},
-            new DressphereAbility {Name = "SOS Wall", MasteredAP = 30, Offset = 0x576},
+            new DressphereAbility {Name = "SOS Wall", MasteredAP = 100, Offset = 0x576},
         ]
     };
 
